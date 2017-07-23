@@ -51,10 +51,12 @@ class ChatContainer extends Component {
 
   handleOnSubmit(ev) {
     ev.preventDefault()
-    this.setState({ hidebox: false });
-    socket.emit('chat message', { message: this.state.input, room: this.props.room.title, user: this.user })
-    this._scrollBottom();
-    this.setState({ input: '' })
+    if (this.state.input) {
+      this.setState({ hidebox: false });
+      socket.emit('chat message', { message: this.state.input, room: this.props.room.title, user: this.user })
+      this._scrollBottom();
+      this.setState({ input: '' })
+    }
   }
 
   _handleMessageEvent() {
