@@ -4,7 +4,7 @@ import * as messageActions from '../../actions/messagesActions';
 import * as roomActions from '../../actions/roomActions';
 import * as userActions from '../../actions/userActions';
 import { bindActionCreators } from 'redux';
-import ChatLog from '../chatLog';
+import ChatList from '../ChatList';
 import { Grid, Row, Glyphicon, InputGroup, PageHeader, Col, Button, FormGroup, FormControl } from 'react-bootstrap';
 
 class ChatContainer extends Component {
@@ -17,7 +17,6 @@ class ChatContainer extends Component {
       messages: props.messages,
       connected: false
     };
-
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleOnSubmit = this.handleOnSubmit.bind(this);
     this._handleMessageEvent = this._handleMessageEvent.bind(this);
@@ -32,7 +31,6 @@ class ChatContainer extends Component {
   }
 
   componentDidMount() {
-    console.log('did mount');
     this._handleMessageEvent();
     window.addEventListener('beforeunload', this.onUnload);
   }
@@ -53,7 +51,7 @@ class ChatContainer extends Component {
     ev.preventDefault();
     if (this.state.input) {
       this.setState({ hidebox: false });
-      socket.emit('chat message', { message: this.state.input, room: this.props.room.title, user: this.user });
+      socket.emit('chat message', { message: this.state.input, room: this.props.room.title, user: this.user, type: 'text', items: [] });
       this._scrollBottom();
       this.setState({ input: '' });
     }
@@ -61,7 +59,7 @@ class ChatContainer extends Component {
 
   _handleMessageEvent() {
     socket.on('chat message', (inboundMessage) => {
-      this.props.createMessage({ room: this.props.room, newMessage: { user: JSON.parse(inboundMessage).user, message: JSON.parse(inboundMessage).message } });
+      this.props.createMessage({ room: this.props.room, newMessage: { user: JSON.parse(inboundMessage).user, message: JSON.parse(inboundMessage).message, type: JSON.parse(inboundMessage).type, items: JSON.parse(inboundMessage).items } });
       console.log('received message', inboundMessage);
       this._scrollBottom();
       this.setState({ hidebox: false });
@@ -92,25 +90,26 @@ class ChatContainer extends Component {
   }
 
   render() {
+    console.log(this.props.messages);
     return (
       <div>
-        <div className="container" 
-        style={{
-          height: '400px',
-          position: 'fixed',
-          bottom: 0
-        }}>
-          <div className="row" 
+        <div className="container"
           style={{
-            'margin-left': '0px',
-            'margin-right': '0px',
-            bottom: 0,
-            'position': 'fixed',
-            'float': 'right'
+            height: '400px',
+            position: 'fixed',
+            bottom: 0
           }}>
+          <div className="row"
+            style={{
+              marginLeft: '0px',
+              marginRight: '0px',
+              bottom: 0,
+              position: 'fixed',
+              float: 'right'
+            }}>
             <div className="col-lg-4 col-md-6 col-xs-12">
               <div className="panel panel-default" style={{
-                'border-radius': '5px 5px 0 0'
+                borderRadius: '5px 5px 0 0'
               }}>
                 {!this.state.hidebox &&
                   <div className="panel-heading">
@@ -130,12 +129,12 @@ class ChatContainer extends Component {
                   <div id="messages" className="panel-body" style={{
                     margin: '0',
                     padding: '0 10px 10px',
-                    'max-height': '300px',
-                    'overflow-x': 'hidden',
-                    'overflow-y': 'auto'
+                    maxHeight: '300px',
+                    overflowX: 'hidden',
+                    overflowY: 'auto'
                   }}>
                     {this.props.messages &&
-                      <ChatLog uid={this.user} messages={this.props.messages} ref={(ref) => this.ref} />
+                      <ChatList uid={this.user} messages={this.props.messages} ref={(ref) => this.ref} />
                     }
                   </div>
                 }

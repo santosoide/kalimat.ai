@@ -44,7 +44,7 @@ app.get('/', function (req, res) {
 
 app.get('/broadcast', function (req, res) {
   res.send(['broadcast']);
-  io.to(room).emit('chat message', JSON.stringify({ message: "hello broadcast", user: 'bot' }));
+  io.to(room).emit('chat message', JSON.stringify({ type: 'text', message: "hello broadcast", user: 'bot', items: [] }));
 });
 
 io.on('connection', function (socket) {
@@ -61,8 +61,9 @@ io.on('connection', function (socket) {
     // console.log(`${data.user}: is disconnected`.red);
   });
   socket.on('chat message', function (msg) {
+    msg.type = 'text';
     console.log(`${msg.user}: is writing '${msg.message}'`.green);
-    let message = new Message({ user: msg.user, content: msg.message, room: room });
+    let message = new Message({ user: msg.user, type: 'text', content: msg.message, room: room, items: [] });
     message.save((err) => {
       if (err) return err;
     });
@@ -77,11 +78,11 @@ io.on('connection', function (socket) {
 function replay(msg, id) {
   let replay;
   if (isMatch(msg.message, 'hello')) {
-    replay = { user: 'bot', message: 'got hello', room: room };
+    replay = { user: 'bot', type: 'text', message: 'got hello', room: room, items: [] };
   } else if (isMatch(msg.message, 'button')) {
-    replay = { user: 'bot', message: 'button', room: room };
+    replay = { user: 'bot', type: 'template', message: 'button', room: room, items: [{ item: 'button', text: 'Ok' }, { item: 'button', text: 'No' }] };
   } else {
-    replay = { user: 'bot', message: 'saya tidak mengerti', room: room };
+    replay = { user: 'bot', type: 'text', message: 'saya tidak mengerti', room: room, items: [] };
   }
 
   io.to(id).emit('chat message', JSON.stringify(replay));
@@ -108,10 +109,9 @@ db.once('open', () => {
     }
   });
 
-
   app.post('/messages', (req, res) => {
     console.log(req.body);
-    let message = new Message({ user: req.body.user, content: req.body.message, room: room });
+    let message = new Message({ user: req.body.user, type: 'text', content: req.body.message, room: room, items: [] });
     message.save((err) => {
       if (err) return err;
     });

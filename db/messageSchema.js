@@ -1,16 +1,14 @@
-import mongoose from 'mongoose'
-// import imageSchema from './imageSchema'
-
-const imageSchema = mongoose.Schema({
-   data: String,
-   contentType: String
-}) 
+import mongoose from 'mongoose';
 
 const messageSchema = mongoose.Schema({
   user: String,
+  type: String,
+  items: {
+    item: String,
+    text: String
+  },
   content: String,
-  room: String,
-  image: String 
-})
+  room: String
+});
 
-export default mongoose.model('Message', messageSchema)
+export default mongoose.model('Message', messageSchema);
