@@ -94,18 +94,21 @@ class ChatContainer extends Component {
   render() {
     return (
       <div>
-        <div className="container" style={{
+        <div className="container" 
+        style={{
           height: '400px',
           position: 'fixed',
           bottom: 0
         }}>
-          <div className="row" style={{
-            'margin-left': '10px',
+          <div className="row" 
+          style={{
+            'margin-left': '0px',
+            'margin-right': '0px',
             bottom: 0,
             'position': 'fixed',
             'float': 'right'
           }}>
-            <div className="col-xs-4 col-md-4">
+            <div className="col-lg-4 col-md-6 col-xs-12">
               <div className="panel panel-default" style={{
                 'border-radius': '5px 5px 0 0'
               }}>

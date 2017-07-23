@@ -4,7 +4,7 @@ import { Col, Alert, Panel, Image } from 'react-bootstrap'
 export default (props) => {
   return (
     <div>
-      {(props.user === props.uid || props.user === 'bot') &&
+      {(props.user === 'bot' || props.user === props.uid || props.uid === props.to) &&
         <div
           className="row"
           style={{
@@ -13,7 +13,7 @@ export default (props) => {
             border: '5px solid white',
             borderRightColor: 'transparent',
             borderTopColor: 'transparent',
-            boxShadow: '1px 1px 2px rgba(black, 0.2)',
+            boxShadow: '1px 1px 2px rgba(black, 0.2)'
           }}>
           <div>
             <div
