@@ -84,12 +84,16 @@ io.on('connection', function (socket) {
 });
 
 function replay(msg) {
+  let replay;
   if (isMatch(msg.message, 'hello')) {
-    io.to(room).emit('chat message', JSON.stringify({ user: 'bot', message: 'got hello', room: room }));
+    replay = { user: 'bot', message: 'got hello', room: room };
   } else if (isMatch(msg.message, 'button')) {
-    io.to(room).emit('chat message', JSON.stringify({ user: 'bot', message: 'button', room: room }));
+    replay = { user: 'bot', message: 'button', room: room };
+  } else {
+    replay = { user: 'bot', message: 'saya tidak mengerti', room: room };
   }
 
+  io.to(room).emit('chat message', JSON.stringify(replay));
 }
 
 function isMatch(str, match) {
