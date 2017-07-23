@@ -5,40 +5,40 @@ import * as roomActions from '../../actions/roomActions';
 import * as userActions from '../../actions/userActions';
 import { bindActionCreators } from 'redux';
 import ChatLog from '../chatLog';
-import { Grid, Row, Glyphicon, InputGroup, PageHeader, Col, Button, FormGroup, FormControl } from 'react-bootstrap'
+import { Grid, Row, Glyphicon, InputGroup, PageHeader, Col, Button, FormGroup, FormControl } from 'react-bootstrap';
 
 class ChatContainer extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.user = Math.round((Math.random() * 1000000));
     this.state = {
       input: '',
       hidebox: false,
       messages: props.messages,
       connected: false
-    }
+    };
 
-    this.handleOnChange = this.handleOnChange.bind(this)
-    this.handleOnSubmit = this.handleOnSubmit.bind(this)
-    this._handleMessageEvent = this._handleMessageEvent.bind(this)
-    this._init = this._init.bind(this)
+    this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleOnSubmit = this.handleOnSubmit.bind(this);
+    this._handleMessageEvent = this._handleMessageEvent.bind(this);
+    this._init = this._init.bind(this);
     this.onUnload = this.onUnload.bind(this);
     this._scrollBottom = this._scrollBottom.bind(this);
     this._hideBox = this._hideBox.bind(this);
   }
 
   componentWillMount() {
-    this._init()
+    this._init();
   }
 
   componentDidMount() {
-    console.log('did mount')
-    this._handleMessageEvent()
+    console.log('did mount');
+    this._handleMessageEvent();
     window.addEventListener('beforeunload', this.onUnload);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('beforeunload', this.onUnload)
+    window.removeEventListener('beforeunload', this.onUnload);
   }
 
   onUnload() {
@@ -46,33 +46,33 @@ class ChatContainer extends Component {
   }
 
   handleOnChange(ev) {
-    this.setState({ input: ev.target.value })
+    this.setState({ input: ev.target.value });
   }
 
   handleOnSubmit(ev) {
-    ev.preventDefault()
+    ev.preventDefault();
     if (this.state.input) {
       this.setState({ hidebox: false });
-      socket.emit('chat message', { message: this.state.input, room: this.props.room.title, user: this.user })
+      socket.emit('chat message', { message: this.state.input, room: this.props.room.title, user: this.user });
       this._scrollBottom();
-      this.setState({ input: '' })
+      this.setState({ input: '' });
     }
   }
 
   _handleMessageEvent() {
     socket.on('chat message', (inboundMessage) => {
-      this.props.createMessage({ room: this.props.room, newMessage: { user: JSON.parse(inboundMessage).user, message: JSON.parse(inboundMessage).message } })
-      console.log('received message', inboundMessage)
+      this.props.createMessage({ room: this.props.room, newMessage: { user: JSON.parse(inboundMessage).user, message: JSON.parse(inboundMessage).message } });
+      console.log('received message', inboundMessage);
       this._scrollBottom();
       this.setState({ hidebox: false });
-    })
+    });
   }
 
   _scrollBottom() {
     setTimeout(() => {
       const messages = document.getElementById('messages');
       messages.scrollTop = messages.scrollHeight;
-    }, 200)
+    }, 200);
     this.setState({ hidebox: false });
   }
 
@@ -156,7 +156,7 @@ class ChatContainer extends Component {
           </div>
         </div>
       </div >
-    )
+    );
   }
 }
 
@@ -165,7 +165,7 @@ function mapStateToProps(state, ownProps) {
     messages: state.activeRoom.messages,
     room: state.activeRoom,
     user: state.user
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -173,9 +173,9 @@ function mapDispatchToProps(dispatch) {
     createMessage: messageActions.saveMessage,
     fetchRoom: roomActions.fetchRoomData,
     newUser: (user) => {
-      dispatch(userActions.newUser(user))
+      dispatch(userActions.newUser(user));
     }
-  }, dispatch)
+  }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChatContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(ChatContainer);

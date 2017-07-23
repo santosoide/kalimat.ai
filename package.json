@@ -67,6 +67,6 @@
     "webpack-dev-middleware": "1.6.1",
     "webpack-hot-middleware": "2.10.0"
   },
-  "author": "sophie debenedetto",
-  "license": "ISC"
+  "author": "Edi Santoso <edicyber@gmail.com>",
+  "license": "MIT"
 }

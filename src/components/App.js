@@ -1,7 +1,6 @@
-import React from 'react'
-import ChatContainer from './containers/ChatContainer'
-import WelcomePage from './common/WelcomePage'
-import { connect } from 'react-redux'
+import React from 'react';
+import ChatContainer from './containers/ChatContainer';
+import { connect } from 'react-redux';
 
 class App extends React.Component {
   constructor(props) {
@@ -18,7 +17,7 @@ class App extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  return { user: state.user }
+  return { user: state.user };
 }
 
 export default connect(mapStateToProps)(App);
