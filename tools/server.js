@@ -57,6 +57,7 @@ app.get('/broadcast', function (req, res) {
 });
 
 io.on('connection', function (socket) {
+  let socketId = socket.id;
   socket.on('subscribe', (data) => {
     console.log(`${data.user}: is connected`.green);
     socket.join(room)
@@ -78,12 +79,12 @@ io.on('connection', function (socket) {
 
     io.to(room).emit('chat message', JSON.stringify(msg))
 
-    replay(msg);
+    replay(msg, socketId);
   });
 
 });
 
-function replay(msg) {
+function replay(msg, id) {
   let replay;
   if (isMatch(msg.message, 'hello')) {
     replay = { user: 'bot', message: 'got hello', room: room };
@@ -93,7 +94,7 @@ function replay(msg) {
     replay = { user: 'bot', message: 'saya tidak mengerti', room: room };
   }
 
-  io.to(room).emit('chat message', JSON.stringify(replay));
+  io.to(id).emit('chat message', JSON.stringify(replay));
 }
 
 function isMatch(str, match) {
