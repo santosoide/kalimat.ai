@@ -28,3 +28,5 @@ $ http://localhost:5000/broadcast
 ## Demo
 
 ![demo](https://raw.githubusercontent.com/cyberid41/kalimat.ai/master/kalimatai.gif)
+
+![demo](https://raw.githubusercontent.com/cyberid41/kalimat.ai/master/kalimatai.gif)![demo](https://raw.githubusercontent.com/cyberid41/kalimat.ai/master/kalimatai-demo.gif)
