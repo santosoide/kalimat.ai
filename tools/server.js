@@ -85,7 +85,7 @@ io.on('connection', function (socket) {
 
 function replay(msg) {
   if (isMatch(msg.message, 'hello')) {
-    io.to(room).emit('chat message', JSON.stringify({ user: 'not', message: 'got hello', room: room }));
+    io.to(room).emit('chat message', JSON.stringify({ user: 'bot', message: 'got hello', room: room }));
   } else if (isMatch(msg.message, 'button')) {
     io.to(room).emit('chat message', JSON.stringify({ user: 'bot', message: 'button', room: room }));
   }
