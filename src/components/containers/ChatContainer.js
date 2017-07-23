@@ -154,7 +154,7 @@ class ChatContainer extends Component {
             </div>
           </div>
         </div>
-      </div >
+      </div>
     );
   }
 }

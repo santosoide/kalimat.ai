@@ -56,6 +56,9 @@ io.on('connection', function (socket) {
   socket.on('unsubscribe', (data) => {
     console.log(`${data.user}: is disconnected`.red);
   });
+  socket.on('button click', (data) => {
+    replay(data, socketId);
+  });
 
   socket.on('disconnect', (data) => {
     // console.log(`${data.user}: is disconnected`.red);
@@ -81,6 +84,10 @@ function replay(msg, id) {
     replay = { user: 'bot', type: 'text', message: 'got hello', room: room, items: [] };
   } else if (isMatch(msg.message, 'button')) {
     replay = { user: 'bot', type: 'template', message: 'button', room: room, items: [{ item: 'button', text: 'Ok' }, { item: 'button', text: 'No' }] };
+  } else if (isMatch(msg.message, 'good')) {
+    replay = { user: 'bot', type: 'text', message: 'Good!', room: room, items: [] };
+  } else if (isMatch(msg.message, 'no')) {
+    replay = { user: 'bot', type: 'text', message: 'Oh No!', room: room, items: [] };
   } else {
     replay = { user: 'bot', type: 'text', message: 'saya tidak mengerti', room: room, items: [] };
   }
