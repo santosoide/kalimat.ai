@@ -66,7 +66,7 @@ io.on('connection', function (socket) {
   })
 
   socket.on('disconnect', (data) => {
-    console.log(`${data.user}: is disconnected`.red);
+    // console.log(`${data.user}: is disconnected`.red);
   })
 
   socket.on('chat message', function (msg) {
